@@ -21,6 +21,10 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: 2,
   workers: 4,
+  timeout: 120000,
+  expect: {
+    timeout: 60000
+  },
   reporter: [
     [!!process.env.CI ? 'github' : 'list'],
     ['html', { open: !!process.env.CI ? 'never' : 'always' }],
@@ -35,11 +39,11 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] }
+      use: { ...devices['Desktop Chrome'], permissions: ['clipboard-read', 'clipboard-write'] }
     },
     {
       name: 'Google Chrome',
-      use: { ...devices['Desktop Chrome'], channel: 'chrome' }
+      use: { ...devices['Desktop Chrome'], channel: 'chrome', permissions: ['clipboard-read', 'clipboard-write'] }
     },
     {
       name: 'firefox',
@@ -56,7 +60,7 @@ export default defineConfig({
     },
     {
       name: 'Microsoft Edge',
-      use: { ...devices['Desktop Edge'], channel: 'msedge' }
+      use: { ...devices['Desktop Edge'], channel: 'msedge', permissions: ['clipboard-read', 'clipboard-write'] }
     }
   ],
   webServer: process.env.CI
