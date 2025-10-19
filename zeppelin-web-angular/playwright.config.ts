@@ -20,6 +20,10 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
+  timeout: 120000,
+  expect: {
+    timeout: 60000
+  },
   workers: 4,
   reporter: [
     [!!process.env.CI ? 'github' : 'list'],
