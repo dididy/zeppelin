@@ -1,7 +1,7 @@
 {
   "extends": ["prettier"],
   "root": true,
-  "ignorePatterns": ["node_modules/**/*", "projects/**/*"],
+  "ignorePatterns": ["node_modules/**/*", "projects/**/*", "playwright.config.ts"],
   "overrides": [
     {
       "files": ["*.ts"],
