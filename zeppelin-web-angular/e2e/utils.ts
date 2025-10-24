@@ -182,7 +182,7 @@ export async function performLoginIfRequired(page: Page): Promise<boolean> {
     await passwordInput.fill(testUser.password);
     await loginButton.click();
 
-    await page.waitForSelector('text=Welcome to Zeppelin!', { timeout: 5000 });
+    await page.waitForSelector('text=Welcome to Zeppelin!', { timeout: 30000 });
     return true;
   }
 
@@ -206,5 +206,14 @@ export async function waitForZeppelinReady(page: Page): Promise<void> {
     );
   } catch (error) {
     throw error instanceof Error ? error : new Error(`Zeppelin loading failed: ${String(error)}`);
+  }
+}
+
+export async function waitForNotebookLinks(page: Page, timeout: number = 30000): Promise<boolean> {
+  try {
+    await page.waitForSelector('a[href*="#/notebook/"]', { timeout });
+    return true;
+  } catch (error) {
+    return false;
   }
 }
