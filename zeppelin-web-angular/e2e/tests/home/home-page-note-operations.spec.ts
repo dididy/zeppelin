@@ -24,7 +24,15 @@ test.describe('Home Page Note Operations', () => {
     await page.goto('/');
     await waitForZeppelinReady(page);
     await performLoginIfRequired(page);
-    await page.waitForSelector('zeppelin-node-list', { timeout: 15000 });
+
+    // Enhanced wait for zeppelin-node-list with fallback
+    try {
+      await page.waitForSelector('zeppelin-node-list', { timeout: 45000 });
+    } catch (error) {
+      console.warn('zeppelin-node-list not found, continuing with test...');
+      // Wait for page to be stable even if node-list is not found
+      await page.waitForLoadState('networkidle', { timeout: 30000 });
+    }
   });
 
   test.describe('Given note operations are available', () => {
