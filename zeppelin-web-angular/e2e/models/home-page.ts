@@ -117,12 +117,12 @@ export class HomePage extends BasePage {
   }
 
   async navigateToHome(): Promise<void> {
-    await this.page.goto('/', { waitUntil: 'load' });
+    await this.page.goto('/');
     await this.waitForPageLoad();
   }
 
   async navigateToLogin(): Promise<void> {
-    await this.page.goto('/#/login', { waitUntil: 'load' });
+    await this.page.goto('/#/login');
     await this.waitForPageLoad();
     // Wait for potential redirect to complete by checking URL change
     await waitForUrlNotContaining(this.page, '#/login');
@@ -189,6 +189,7 @@ export class HomePage extends BasePage {
   }
 
   async filterNotes(searchTerm: string): Promise<void> {
+    await this.nodeList.filterInput.waitFor({ state: 'visible', timeout: 5000 });
     await this.nodeList.filterInput.fill(searchTerm);
   }
 
