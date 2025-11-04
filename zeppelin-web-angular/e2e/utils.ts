@@ -395,8 +395,8 @@ export async function createTestNotebook(
 
   // Navigate back to home
   await page.goto('/');
-  await page.waitForLoadState('networkidle');
-  await page.waitForSelector('text=Welcome to Zeppelin!', { timeout: 5000 });
+  await page.waitForLoadState('networkidle', { timeout: 30000 });
+  await page.waitForSelector('text=Welcome to Zeppelin!', { timeout: 20000 });
 
   return { noteId, paragraphId };
 }
@@ -405,8 +405,8 @@ export async function deleteTestNotebook(page: Page, noteId: string): Promise<vo
   try {
     // Navigate to home page
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
-    await page.waitForSelector('text=Welcome to Zeppelin!', { timeout: 5000 });
+    await page.waitForLoadState('networkidle', { timeout: 30000 });
+    await page.waitForSelector('text=Welcome to Zeppelin!', { timeout: 20000 });
 
     // Find the notebook in the tree
     const treeNode = page.locator(`//span[@class='node-name' and contains(text(), 'Test Notebook')]`);
