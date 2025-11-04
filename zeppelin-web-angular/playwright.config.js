@@ -25,11 +25,7 @@ module.exports = defineConfig({
   expect: {
     timeout: 60000
   },
-  reporter: [
-    [!!process.env.CI ? 'github' : 'list'],
-    ['html', { open: !!process.env.CI ? 'never' : 'always' }],
-    ['./e2e/reporter.coverage.ts']
-  ],
+  reporter: [['list'], ['html', { open: !!process.env.CI ? 'never' : 'always' }], ['./e2e/reporter.coverage.ts']],
   use: {
     baseURL: process.env.CI ? 'http://localhost:8080' : 'http://localhost:4200',
     trace: 'on-first-retry', // https://playwright.dev/docs/trace-viewer
