@@ -10,14 +10,19 @@
  * limitations under the License.
  */
 
+import * as fs from 'fs';
 import { LoginTestUtil } from './models/login-page.util';
 
 async function globalSetup() {
-  console.log('🔧 Global Setup: Checking Shiro configuration...');
+  console.log('Global Setup: Preparing test environment...');
 
   // Reset cache to ensure fresh check
   LoginTestUtil.resetCache();
 
+  // Set up test notebook directory if specified
+  await setupTestNotebookDirectory();
+
+  // Check Shiro configuration
   const isShiroEnabled = await LoginTestUtil.isShiroEnabled();
 
   if (isShiroEnabled) {
@@ -29,8 +34,27 @@ async function globalSetup() {
 
     console.log(`📋 Found ${userCount} test credentials in shiro.ini`);
   } else {
-    console.log('⚠️  Shiro.ini not found - authentication tests will be skipped');
+    console.log('⚠️ Shiro.ini not found - authentication tests will be skipped');
   }
+}
+
+async function setupTestNotebookDirectory(): Promise<void> {
+  const testNotebookDir = process.env.ZEPPELIN_E2E_TEST_NOTEBOOK_DIR;
+
+  if (!testNotebookDir) {
+    console.log('No custom test notebook directory configured');
+    return;
+  }
+
+  console.log(`Setting up test notebook directory: ${testNotebookDir}`);
+
+  // Remove existing directory if it exists, then create fresh
+  if (fs.existsSync(testNotebookDir)) {
+    await fs.promises.rmdir(testNotebookDir, { recursive: true });
+  }
+
+  fs.mkdirSync(testNotebookDir, { recursive: true });
+  fs.chmodSync(testNotebookDir, 0o777);
 }
 
 export default globalSetup;
